@@ -133,7 +133,7 @@ function JobDetails() {
 					<div className='row'>
 						<div className='col-md-3'></div>
 						<div className='col-md-8 '>
-							<Agenda />
+							<Agenda employeeName={newEvent.title} />
 						</div>
 					</div>
 				</div>

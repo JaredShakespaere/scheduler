@@ -1,22 +1,34 @@
-import React from 'react';
+import React, { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import blankAvatar from '../pics/avatar placeholder.png';
 
-function Agenda() {
+function Agenda(props) {
+	//State
+	const [employeePic, setEmployeePic] = useState(blankAvatar);
+
+	//event handlers
+
 	return (
 		<div className='container border border-gray shadow p-3 mb-5 bg-white rounded col-md-12'>
-			<div className='row'>
+			<div className='row '>
 				<div className='col-md-12 text-secondary'>
 					<h1>
 						<strong>Job Details</strong>
 					</h1>
 				</div>
 			</div>
-			<div className='row'>
+			<div className='row '>
 				<div className='col-md-12'>
-					<div className='border'>employee pic</div>
+					<div className='border row'>
+						<img className='shadow rounded border'
+							src={employeePic}
+							alt='employee'
+						/>
+					</div>
 				</div>
 			</div>
-			<div className='row'>
+			<br></br>
+			<div className='row border rounded'>
 				<div className='card'>
 					<div className='card-body'>
 						<div className='col-md-4'>
