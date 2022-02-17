@@ -1,15 +1,19 @@
-import React, { useState } from 'react';
+import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import blankAvatar from '../pics/avatar placeholder.png';
 
-function Agenda(props) {
+function Agenda({hideModal, show, props}) {
+	const showHideClass = show
+		? ' modal d-block container border border-gray shadow p-3 mb-5 bg-white rounded col-md-12'
+		: 'modal d-none';
 	//State
-	const [employeePic, setEmployeePic] = useState(blankAvatar);
 
 	//event handlers
 
 	return (
-		<div className='container border border-gray shadow p-3 mb-5 bg-white rounded col-md-12'>
+		<div className={showHideClass}>
+			<button type='button' onClick={hideModal}>
+				close
+			</button>
 			<div className='row '>
 				<div className='col-md-12 text-secondary'>
 					<h1>
@@ -20,10 +24,7 @@ function Agenda(props) {
 			<div className='row '>
 				<div className='col-md-12'>
 					<div className='border row'>
-						<img className='shadow rounded border'
-							src={employeePic}
-							alt='employee'
-						/>
+						
 					</div>
 				</div>
 			</div>
@@ -34,7 +35,7 @@ function Agenda(props) {
 						<div className='col-md-4'>
 							<div className='card-text '>
 								<div className='d-flex flex-column'>
-									<div className='p-2'>Employee Name:</div>
+									<div className='p-2'>Employee:</div>
 									<div className='p-2'>Day:</div>
 									<div className='p-2'>Timeframe:</div>
 									<div className='p-2'>Decription:</div>

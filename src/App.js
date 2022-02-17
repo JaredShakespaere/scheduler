@@ -9,6 +9,8 @@ function App() {
 					<h2 className='text-primary'>Scheduler</h2>
 					<h3 className='text-secondary'>Add New Job</h3>
 					<JobDetails />
+					
+
 		</div>
 	);
 }

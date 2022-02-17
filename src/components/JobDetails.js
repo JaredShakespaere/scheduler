@@ -11,7 +11,7 @@ import enUS from 'date-fns/locale/en-US';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import dummy from '../api/dummy';
 import AsyncSelect from 'react-select/async';
-import Agenda from './Agenda';
+import ModalDashboard from './ModalDashboard';
 
 const locales = {
 	'en-US': enUS,
@@ -34,14 +34,15 @@ function JobDetails() {
 		allDay: false,
 		employeePic: null,
 	});
-	//^^saves new event to state- There are 3 parts of a new event.
-	// 1. Title 2. Start date and time 3. End date and time
+	//^^saves new event to state
 	const [allEvents, setAllEvents] = useState([]);
 	// list of all events. setAllEvents adds a newEvent to the allEvents list
 	const [value, setValue] = useState('');
-	const [selectedValue, setSelectedValue] = useState('');
 	// sets the value of the employee dropdown to the selected
-
+	const [selectedValue, setSelectedValue] = useState('');
+	//handles selected event on calendar
+	const [selectedEvent, setSelectedEvent] = useState();
+	
 	//////////HANDLERS////////////////
 	function handleAddEvent() {
 		setAllEvents([...allEvents, newEvent]); //adds a new event to the allEvents list
@@ -54,11 +55,20 @@ function JobDetails() {
 	const handleDropdown = (value) => {
 		let employeeName = value.first_name + ' ' + value.last_name;
 		let employeePic = value.avatar;
-		console.log('employeename', employeeName);
-		console.log(value);
 		setSelectedValue(value);
 		setNewEvent({ ...newEvent, title: employeeName, employeePic });
 	};
+
+	//handles when the calendar is clicked
+	function handleCalendarClick(event){
+		console.log('calendar event was clicked')
+		
+		setSelectedEvent(event)
+	
+
+	}
+
+	
 
 	/////////API ENDPOINTS//////////
 	const fetchData = () => {
@@ -126,14 +136,16 @@ function JobDetails() {
 						endAccessor='end'
 						style={{ height: '20vw', marginTop: '100px' }}
 						defaultView='day'
-						onClick={() => {}}
+						onSelectEvent={handleCalendarClick}
+						selected={selectedEvent}
 					/>
 				</div>
 				<div className='col-md-4'>
 					<div className='row'>
 						<div className='col-md-3'></div>
 						<div className='col-md-8 '>
-							<Agenda employeeName={newEvent.title} />
+							<ModalDashboard selectedEvent={selectedEvent} />
+							
 						</div>
 					</div>
 				</div>
