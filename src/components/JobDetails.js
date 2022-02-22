@@ -11,9 +11,9 @@ import enUS from 'date-fns/locale/en-US';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import dummy from '../api/dummy';
 import AsyncSelect from 'react-select/async';
-import ModalDashboard from './ModalDashboard';
+// import ModalDashboard from './ModalDashboard';
 import { setHours, setMinutes } from 'date-fns';
-import DateAndTime from './DateAndTime';
+// import DateAndTime from './DateAndTime';
 
 const locales = {
 	'en-US': enUS,
@@ -76,10 +76,6 @@ function JobDetails() {
 		return day !== 0 && day !== 6;
 	}
 
-	//handles selected value
-	function selectedEventHandler(e){
-
-	}
 	/////////API ENDPOINTS//////////
 	const fetchData = () => {
 		return dummy.get('/users?page=2').then((result) => {
@@ -106,6 +102,7 @@ function JobDetails() {
 									loadOptions={fetchData}
 									onInputChange={handleInputChange}
 									onChange={handleDropdown}
+									alt={value}
 								/>
 								<br></br>
 								<textarea
