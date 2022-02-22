@@ -1,7 +1,9 @@
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import '.././Agenda.css';
 
-function Agenda({hideModal, show, props}) {
+function Agenda({ hideModal, show, title, startDateAndTime, endDateAndTime, jobDescription }) {
+	
 	const showHideClass = show
 		? ' modal d-block container border border-gray shadow p-3 mb-5 bg-white rounded col-md-12'
 		: 'modal d-none';
@@ -23,9 +25,7 @@ function Agenda({hideModal, show, props}) {
 			</div>
 			<div className='row '>
 				<div className='col-md-12'>
-					<div className='border row'>
-						
-					</div>
+					<div className='border row'></div>
 				</div>
 			</div>
 			<br></br>
@@ -35,10 +35,14 @@ function Agenda({hideModal, show, props}) {
 						<div className='col-md-4'>
 							<div className='card-text '>
 								<div className='d-flex flex-column'>
-									<div className='p-2'>Employee:</div>
-									<div className='p-2'>Day:</div>
-									<div className='p-2'>Timeframe:</div>
-									<div className='p-2'>Decription:</div>
+									<div className='p-2'>
+										Employee: {title}
+									</div>
+									<div className='p-2'>Start: {} </div>
+									<div className='p-2'>End: {} </div>
+									<div className='p-2'>
+										Decription: {jobDescription}
+									</div>
 								</div>
 							</div>
 						</div>

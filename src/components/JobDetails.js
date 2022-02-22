@@ -12,6 +12,8 @@ import 'react-big-calendar/lib/css/react-big-calendar.css';
 import dummy from '../api/dummy';
 import AsyncSelect from 'react-select/async';
 import ModalDashboard from './ModalDashboard';
+import { setHours, setMinutes } from 'date-fns';
+import DateAndTime from './DateAndTime';
 
 const locales = {
 	'en-US': enUS,
@@ -29,6 +31,7 @@ function JobDetails() {
 	const [newEvent, setNewEvent] = useState({
 		title: '',
 		start: '',
+		startDate: setHours(setMinutes(new Date(), 0), 8),
 		end: '',
 		jobDescription: '',
 		allDay: false,
@@ -41,10 +44,11 @@ function JobDetails() {
 	// sets the value of the employee dropdown to the selected
 	const [selectedValue, setSelectedValue] = useState('');
 	//handles selected event on calendar
-	const [selectedEvent, setSelectedEvent] = useState();
-	
+	const [selectedEvent, setSelectedEvent] = useState({});
+
 	//////////HANDLERS////////////////
 	function handleAddEvent() {
+	
 		setAllEvents([...allEvents, newEvent]); //adds a new event to the allEvents list
 	}
 	//handle dropdown input change event
@@ -60,16 +64,22 @@ function JobDetails() {
 	};
 
 	//handles when the calendar is clicked
-	function handleCalendarClick(event){
-		console.log('calendar event was clicked')
-		
-		setSelectedEvent(event)
-	
+	function handleCalendarClick(event) {
+		console.log('calendar event was clicked');
 
+		setSelectedEvent(event);
 	}
 
-	
+	//handles excluding weekends
+	function isWorkday(date) {
+		const day = getDay(date);
+		return day !== 0 && day !== 6;
+	}
 
+	//handles selected value
+	function selectedEventHandler(e){
+
+	}
 	/////////API ENDPOINTS//////////
 	const fetchData = () => {
 		return dummy.get('/users?page=2').then((result) => {
@@ -86,45 +96,118 @@ function JobDetails() {
 					<div className='form-group row'>
 						<div className='col-md-3'></div>
 						<div className='col-md-6'>
-							<AsyncSelect
-								cacheOptions
-								defaultOptions
-								value={selectedValue}
-								getOptionLabel={(e) => e.first_name + ' ' + e.last_name}
-								getOptionValue={(e) => e.id}
-								loadOptions={fetchData}
-								onInputChange={handleInputChange}
-								onChange={handleDropdown}
-							/>
-							<br></br>
-							<textarea
-								className='form-control '
-								id='jobDescripton'
-								rows='3'
-								placeholder='Add Job Notes'
-								value={newEvent.jobDescription}
-								onChange={(e) =>
-									setNewEvent({ ...newEvent, jobDescription: e.target.value })
-								}></textarea>
-							<br></br>
-							<DatePicker
-								placeholderText='Start Date'
-								selected={newEvent.start}
-								onChange={(start) => setNewEvent({ ...newEvent, start })}
-								showTimeSelect
-							/>
-							<DatePicker
-								placeholderText='End Date'
-								selected={newEvent.end}
-								onChange={(end) => setNewEvent({ ...newEvent, end })}
-								showTimeSelect
-							/>
-							<button
-								className='btn btn-primary text-light'
-								style={{ marginTop: '10px' }}
-								onClick={handleAddEvent}>
-								Add Event
-							</button>
+							
+								<AsyncSelect
+									cacheOptions
+									defaultOptions
+									value={selectedValue}
+									getOptionLabel={(e) => e.first_name + ' ' + e.last_name}
+									getOptionValue={(e) => e.id}
+									loadOptions={fetchData}
+									onInputChange={handleInputChange}
+									onChange={handleDropdown}
+								/>
+								<br></br>
+								<textarea
+									className='form-control '
+									id='jobDescripton'
+									rows='3'
+									placeholder='Add Job Notes'
+									value={newEvent.jobDescription}
+									onChange={(e) =>
+										setNewEvent({ ...newEvent, jobDescription: e.target.value })
+									}></textarea>
+								<br></br>
+								<DatePicker
+									placeholderText='Start Date'
+									selected={newEvent.start}
+									onChange={(start, startDate) =>
+										setNewEvent({ ...newEvent, start })
+									}
+									showTimeSelect
+									filterDate={isWorkday}
+									isClearable={true}
+									excludeTimes={[
+										setHours(setMinutes(new Date(), 0), 0),
+										setHours(setMinutes(new Date(), 0), 1),
+										setHours(setMinutes(new Date(), 0), 2),
+										setHours(setMinutes(new Date(), 0), 3),
+										setHours(setMinutes(new Date(), 0), 4),
+										setHours(setMinutes(new Date(), 0), 5),
+										setHours(setMinutes(new Date(), 0), 6),
+										setHours(setMinutes(new Date(), 0), 7),
+										setHours(setMinutes(new Date(), 0), 18),
+										setHours(setMinutes(new Date(), 0), 19),
+										setHours(setMinutes(new Date(), 0), 20),
+										setHours(setMinutes(new Date(), 0), 21),
+										setHours(setMinutes(new Date(), 0), 22),
+										setHours(setMinutes(new Date(), 0), 23),
+										setHours(setMinutes(new Date(), 0), 24),
+										setHours(setMinutes(new Date(), 30), 0),
+										setHours(setMinutes(new Date(), 30), 1),
+										setHours(setMinutes(new Date(), 30), 2),
+										setHours(setMinutes(new Date(), 30), 3),
+										setHours(setMinutes(new Date(), 30), 4),
+										setHours(setMinutes(new Date(), 30), 5),
+										setHours(setMinutes(new Date(), 30), 6),
+										setHours(setMinutes(new Date(), 30), 7),
+										setHours(setMinutes(new Date(), 30), 18),
+										setHours(setMinutes(new Date(), 30), 19),
+										setHours(setMinutes(new Date(), 30), 20),
+										setHours(setMinutes(new Date(), 30), 21),
+										setHours(setMinutes(new Date(), 30), 22),
+										setHours(setMinutes(new Date(), 30), 23),
+										setHours(setMinutes(new Date(), 30), 24),
+									]}
+								/>
+								<DatePicker
+									placeholderText='End Date'
+									selected={newEvent.end}
+									onChange={(end) => setNewEvent({ ...newEvent, end })}
+									showTimeSelect
+									filterDate={isWorkday}
+									isClearable={true}
+									excludeTimes={[
+										setHours(setMinutes(new Date(), 0), 0),
+										setHours(setMinutes(new Date(), 0), 1),
+										setHours(setMinutes(new Date(), 0), 2),
+										setHours(setMinutes(new Date(), 0), 3),
+										setHours(setMinutes(new Date(), 0), 4),
+										setHours(setMinutes(new Date(), 0), 5),
+										setHours(setMinutes(new Date(), 0), 6),
+										setHours(setMinutes(new Date(), 0), 7),
+										setHours(setMinutes(new Date(), 0), 18),
+										setHours(setMinutes(new Date(), 0), 19),
+										setHours(setMinutes(new Date(), 0), 20),
+										setHours(setMinutes(new Date(), 0), 21),
+										setHours(setMinutes(new Date(), 0), 22),
+										setHours(setMinutes(new Date(), 0), 23),
+										setHours(setMinutes(new Date(), 0), 24),
+										setHours(setMinutes(new Date(), 30), 0),
+										setHours(setMinutes(new Date(), 30), 1),
+										setHours(setMinutes(new Date(), 30), 2),
+										setHours(setMinutes(new Date(), 30), 3),
+										setHours(setMinutes(new Date(), 30), 4),
+										setHours(setMinutes(new Date(), 30), 5),
+										setHours(setMinutes(new Date(), 30), 6),
+										setHours(setMinutes(new Date(), 30), 7),
+										setHours(setMinutes(new Date(), 30), 18),
+										setHours(setMinutes(new Date(), 30), 19),
+										setHours(setMinutes(new Date(), 30), 20),
+										setHours(setMinutes(new Date(), 30), 21),
+										setHours(setMinutes(new Date(), 30), 22),
+										setHours(setMinutes(new Date(), 30), 23),
+										setHours(setMinutes(new Date(), 30), 24),
+									]}
+								/>
+								<button
+									className='btn btn-primary text-light'
+									type='submit'
+									style={{ marginTop: '10px' }}
+									onClick={handleAddEvent}>
+									Add Event
+								</button>
+							
 						</div>
 						<div className='col-md-3'></div>
 					</div>
@@ -144,8 +227,7 @@ function JobDetails() {
 					<div className='row'>
 						<div className='col-md-3'></div>
 						<div className='col-md-8 '>
-							<ModalDashboard selectedEvent={selectedEvent} />
-							
+							{/* <ModalDashboard selectedEvent={selectedEvent} /> */}
 						</div>
 					</div>
 				</div>
